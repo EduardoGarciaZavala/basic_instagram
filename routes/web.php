@@ -38,12 +38,3 @@ Route::get('/dashboard', [DashboardController::class, 'create'])->name('dashboar
 Route::get('/profile', [ProfileController::class, 'create'])->name('profile');
 Route::get('/post/{user:username}', [PostController::class, 'create'])->name('post');
 Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-
-
-Route::get('/test-locale', function () {
-    return [
-        'locale'       => app()->getLocale(),
-        'lang_path'    => lang_path('es/validation.php'),
-        'file_exists'  => file_exists(lang_path('es/validation.php')),
-    ];
-});
