@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateProfileRequest;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -11,12 +12,21 @@ class ProfileController extends Controller
         $this->middleware('auth');
     }
 
-    public function create (){
-
-    return view('profile.index');
+    public function create(Request $request)
+    {
+        return view('profile.index', ['user' => $request->user()]);
     }
 
-    public function update (Request $request){
-        
+    public function update(UpdateProfileRequest $request)
+    {
+        $data = $request->validated();
+
+        if (empty($data['password'])) {
+            unset($data['password']);
+        }
+
+        $request->user()->update($data);
+
+        return redirect()->route('profile')->with('status', 'Perfil actualizado correctamente.');
     }
 }

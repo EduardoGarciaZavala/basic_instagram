@@ -22,7 +22,12 @@ Iniciar sesión en
         <x-input name="password" type="password" placeholder="********"></x-input>
     </div>
 
-    <div class=" mt-4 flex justify-end gap-3 items-center">
+    <div class="flex items-center mt-4">
+        <input id="checked-checkbox" type="checkbox" value="true" name="remember"
+            class="w-4 h-4 border border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft">
+        <label for="checked-checkbox" class="select-none ms-2 text-sm font-medium text-heading">Recuerdame</label>
+    </div>
+    <div class=" mt-4 mb-4 flex justify-end gap-3 items-center">
         <nav class="flex justify-between gap-6">
             <a class="text-gray-600 dark:text-gray-50 underline text-xs font-bold"
                 href="{{route('register.create')}}">Crear
