@@ -30,7 +30,7 @@ Route::get('/login', function () {
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 
-Route::get('/register', [AuthController::class, 'index'])->name('register.create');
+Route::get('/register', [AuthController::class, 'index'])->name('register.index');
 Route::get('/register/help', [AuthController::class, 'help'])->name('register.help');
 Route::post('/register', [AuthController::class, 'register'])->name('register.store');
 

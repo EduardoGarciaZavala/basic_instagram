@@ -30,7 +30,7 @@ Iniciar sesión en
     <div class=" mt-4 mb-4 flex justify-end gap-3 items-center">
         <nav class="flex justify-between gap-6">
             <a class="text-gray-600 dark:text-gray-50 underline text-xs font-bold"
-                href="{{route('register.create')}}">Crear
+                href="{{route('register.index')}}">Crear
                 cuenta</a>
             <a class="text-gray-600 dark:text-gray-50 underline text-xs font-bold" href="*">Olvidaste tu contraseña?</a>
         </nav>
