@@ -16,7 +16,7 @@ class AuthController extends Controller
     ) {}
 
 
-    public function create()
+    public function index()
     {
         return view('auth.register');
     }

@@ -12,7 +12,7 @@ class ProfileController extends Controller
         $this->middleware('auth');
     }
 
-    public function create(Request $request)
+    public function index(Request $request)
     {
         return view('profile.index', ['user' => $request->user()]);
     }

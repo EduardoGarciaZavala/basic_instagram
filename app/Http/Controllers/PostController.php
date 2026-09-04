@@ -12,7 +12,7 @@ class PostController extends Controller
         $this->middleware('auth');
     }
 
-    public function create(User $user)
+    public function index(User $user)
     {
         return view('post.index', ['user' => $user]);
     }

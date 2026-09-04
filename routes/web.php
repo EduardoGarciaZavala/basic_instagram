@@ -30,11 +30,11 @@ Route::get('/login', function () {
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 
-Route::get('/register', [AuthController::class, 'create'])->name('register.create');
+Route::get('/register', [AuthController::class, 'index'])->name('register.create');
 Route::get('/register/help', [AuthController::class, 'help'])->name('register.help');
 Route::post('/register', [AuthController::class, 'register'])->name('register.store');
 
-Route::get('/dashboard', [DashboardController::class, 'create'])->name('dashboard.index');
-Route::get('/profile', [ProfileController::class, 'create'])->name('profile');
-Route::get('/post/{user:username}', [PostController::class, 'create'])->name('post');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+Route::get('/post/{user:username}', [PostController::class, 'index'])->name('post');
 Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
