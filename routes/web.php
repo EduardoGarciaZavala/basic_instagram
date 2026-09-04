@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.st
 
 Route::get('/dashboard', [DashboardController::class, 'create'])->name('dashboard.index');
 Route::get('/profile', [ProfileController::class, 'create'])->name('profile');
+Route::get('/post/{user:username}', [PostController::class, 'create'])->name('post');
 Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
 
