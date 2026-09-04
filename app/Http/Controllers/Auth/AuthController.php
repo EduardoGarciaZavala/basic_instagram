@@ -6,6 +6,7 @@ use App\DTOs\UserDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Services\Interfaces\AuthServiceInterface;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -37,5 +38,14 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         return redirect()->route('dashboard.index');
+    }
+
+    public function logout(Request $request)
+    {
+        auth()->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('home');
     }
 }

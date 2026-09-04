@@ -26,6 +26,8 @@ Route::get('/login', function () {
     return view('main');
 })->name('login');
 
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+
 
 Route::get('/register', [AuthController::class, 'create'])->name('register.create');
 Route::get('/register/help', [AuthController::class, 'help'])->name('register.help');
