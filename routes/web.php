@@ -35,6 +35,7 @@ Route::get('/register/help', [AuthController::class, 'help'])->name('register.he
 Route::post('/register', [AuthController::class, 'register'])->name('register.store');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::get('/post/{user:username}', [PostController::class, 'index'])->name('post');
 Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+Route::get('/profile/{user:username}', [ProfileController::class, 'index'])->name('profile.index');

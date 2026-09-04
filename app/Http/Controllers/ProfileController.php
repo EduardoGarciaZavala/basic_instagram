@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateProfileRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -12,9 +13,14 @@ class ProfileController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(Request $request)
+    public function index(User $user)
     {
-        return view('profile.index', ['user' => $request->user()]);
+        return view('profile.index', ['user' => $user]);
+    }
+
+    public function edit(Request $request)
+    {
+        return view('profile.update', ['user' => $request->user()]);
     }
 
     public function update(UpdateProfileRequest $request)
@@ -27,6 +33,8 @@ class ProfileController extends Controller
 
         $request->user()->update($data);
 
-        return redirect()->route('profile')->with('status', 'Perfil actualizado correctamente.');
+        return redirect()->route('profile.index', [
+            'user' => $request->user()->username,
+        ])->with('status', 'Perfil actualizado correctamente.');
     }
 }

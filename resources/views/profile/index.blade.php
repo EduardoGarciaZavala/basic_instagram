@@ -1,192 +1,156 @@
 @extends('layout.layout-auth')
 
 @section('title')
-    Editar perfil
+    {{ $user->username }}
 @endsection
 
 @section('header')
-    <div class="px-1 py-4 text-gray-900 dark:text-white">
-        <h1 class="text-xl font-semibold sm:text-2xl">Editar perfil</h1>
-        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            Actualiza tu información personal y la seguridad de tu cuenta.
-        </p>
+    <div class="flex items-center gap-2 px-1 py-4 text-gray-900 dark:text-white">
+        <h1 class="text-xl font-semibold sm:text-2xl">{{ '@' . $user->username }}</h1>
+        <svg class="h-5 w-5 text-blue-500" aria-label="Perfil" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.707a1 1 0 00-1.414-1.414L9 10.172 7.707 8.879a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd" />
+        </svg>
     </div>
 @endsection
 
 @section('content')
-    <section
-        class="mx-auto overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800"
-        aria-labelledby="profile-form-title">
-        <div class="border-b border-gray-200 px-5 py-6 dark:border-gray-700 sm:px-8">
-            <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-                <div class="flex items-center gap-4">
-                    <div
-                        class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 p-[3px] sm:h-20 sm:w-20">
-                        <div
-                            class="flex h-full w-full items-center justify-center rounded-full border-4 border-white bg-gray-100 text-2xl font-bold uppercase text-gray-600 dark:border-gray-800 dark:bg-gray-700 dark:text-gray-200">
-                            {{ mb_substr($user->username, 0, 1) }}
-                        </div>
-                    </div>
+    @php($posts = $posts ?? [])
 
-                    <div class="min-w-0">
-                        <h2 id="profile-form-title" class="truncate text-lg font-semibold text-gray-900 dark:text-white">
-                            {{ $user->name }}
-                        </h2>
-                        <p class="truncate text-sm text-gray-500 dark:text-gray-400">{{ '@' . $user->username }}</p>
+    <section class="mx-auto overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800"
+        aria-labelledby="profile-name">
+        <div class="px-4 py-6 sm:px-8 sm:py-8">
+            <div class="grid grid-cols-[88px_1fr] items-center gap-5 sm:grid-cols-[160px_1fr] sm:gap-10 lg:gap-16">
+                <div
+                    class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 p-[3px] sm:h-36 sm:w-36">
+                    <div
+                        class="flex h-full w-full items-center justify-center rounded-full border-4 border-white bg-gray-100 text-2xl font-bold uppercase text-gray-600 dark:border-gray-800 dark:bg-gray-700 dark:text-gray-200 sm:text-5xl">
+                        {{ mb_substr($user->username, 0, 1) }}
                     </div>
                 </div>
 
-                <a href="{{ route('post', ['user' => $user->username]) }}"
-                    class="inline-flex w-fit items-center justify-center gap-2 rounded-lg bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                    <svg class="h-4 w-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 0c0 1.657-4.03 6-9 6s-9-4.343-9-6 4.03-6 9-6 9 4.343 9 6z" />
-                    </svg>
-                    Ver perfil
-                </a>
+                <div class="min-w-0">
+                    <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+                        <div class="min-w-0">
+                            <h2 id="profile-name" class="truncate text-xl font-semibold text-gray-900 dark:text-white">
+                                {{ $user->username }}
+                            </h2>
+                            <p class="truncate text-sm text-gray-500 dark:text-gray-400">{{ $user->name }}</p>
+                        </div>
+
+                        @auth
+                            @if (auth()->id() === $user->id)
+                                <a href="{{ route('profile.edit') }}"
+                                    class="inline-flex w-fit items-center justify-center rounded-lg bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                    Editar perfil
+                                </a>
+                            @else
+                                <button type="button"
+                                    class="inline-flex w-fit items-center justify-center rounded-lg bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800">
+                                    Seguir
+                                </button>
+                            @endif
+                        @endauth
+                    </div>
+
+                    <dl class="mt-5 hidden gap-8 text-sm text-gray-700 dark:text-gray-300 sm:flex">
+                        <div class="flex gap-1.5">
+                            <dt class="font-normal">publicaciones</dt>
+                            <dd class="order-first font-semibold text-gray-900 dark:text-white">{{ count($posts) }}</dd>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <dt class="font-normal">seguidores</dt>
+                            <dd class="order-first font-semibold text-gray-900 dark:text-white">0</dd>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <dt class="font-normal">seguidos</dt>
+                            <dd class="order-first font-semibold text-gray-900 dark:text-white">0</dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="mt-6 sm:ml-[200px] lg:ml-[224px]">
+                <p class="font-semibold text-gray-900 dark:text-white">{{ $user->name }}</p>
+                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-300">
+                    {{ $user->description ?: 'Comparte tus mejores momentos con la comunidad.' }}
+                </p>
             </div>
         </div>
 
-        @if (session('status'))
-            <div class="mx-5 mt-6 flex items-center gap-3 rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-800 dark:border-green-800 dark:bg-green-900/30 dark:text-green-300 sm:mx-8"
-                role="status">
-                <svg class="h-5 w-5 shrink-0" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.707a1 1 0 00-1.414-1.414L9 10.172 7.707 8.879a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                        clip-rule="evenodd" />
-                </svg>
-                {{ session('status') }}
+        <dl class="grid grid-cols-3 border-t border-gray-200 py-3 text-center text-xs text-gray-500 dark:border-gray-700 dark:text-gray-400 sm:hidden">
+            <div>
+                <dd class="text-sm font-semibold text-gray-900 dark:text-white">{{ count($posts) }}</dd>
+                <dt>publicaciones</dt>
             </div>
-        @endif
-
-        <form action="{{ route('profile.update') }}" method="POST">
-            @csrf
-            @method('PUT')
-
-            <div class="space-y-8 px-5 py-6 sm:px-8 sm:py-8">
-                <fieldset>
-                    <legend class="flex items-center gap-2 text-base font-semibold text-gray-900 dark:text-white">
-                        <svg class="h-5 w-5 text-blue-600 dark:text-blue-400" aria-hidden="true" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M5.121 17.804A9.953 9.953 0 0112 15c2.615 0 5 1 6.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0zm6 1a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        Información personal
-                    </legend>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                        Estos datos identifican tu cuenta dentro de la aplicación.
-                    </p>
-
-                    <div class="mt-5 grid gap-x-5 gap-y-4 sm:grid-cols-2">
-                        <div>
-                            <x-label for="name">Nombre completo</x-label>
-                            <x-input id="name" name="name" type="text" autocomplete="name"
-                                placeholder="Nombre completo" value="{{ old('name', $user->name) }}" />
-                            @error('name')
-                                <p class="mt-1.5 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div>
-                            <x-label for="username">Nombre de usuario</x-label>
-                            <div class="relative">
-                                <span
-                                    class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-sm text-gray-500 dark:text-gray-400">@</span>
-                                <x-input id="username" name="username" type="text" autocomplete="username"
-                                    class="pl-8" placeholder="usuario"
-                                    value="{{ old('username', $user->username) }}" />
-                            </div>
-                            @error('username')
-                                <p class="mt-1.5 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div>
-                            <x-label for="email">Correo electrónico</x-label>
-                            <x-input id="email" name="email" type="email" autocomplete="email"
-                                placeholder="correo@ejemplo.com" value="{{ old('email', $user->email) }}" />
-                            @error('email')
-                                <p class="mt-1.5 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div>
-                            <x-label for="birthdate">Fecha de nacimiento</x-label>
-                            <x-input id="birthdate" name="birthdate" type="date"
-                                value="{{ old('birthdate', $user->birthdate?->format('Y-m-d')) }}" />
-                            @error('birthdate')
-                                <p class="mt-1.5 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div class="sm:col-span-2">
-                            <x-label for="description">Biografía</x-label>
-                            <textarea id="description" name="description" rows="4"
-                                class="block w-full resize-y rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-                                placeholder="Cuéntanos algo sobre ti...">{{ old('description', $user->description) }}</textarea>
-                            <div class="mt-1.5 flex items-start justify-between gap-4">
-                                @error('description')
-                                    <p class="text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                                @else
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">Esta información aparecerá en tu perfil.</p>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-
-                <div class="border-t border-gray-200 dark:border-gray-700"></div>
-
-                <fieldset>
-                    <legend class="flex items-center gap-2 text-base font-semibold text-gray-900 dark:text-white">
-                        <svg class="h-5 w-5 text-blue-600 dark:text-blue-400" aria-hidden="true" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 11c0-1.105.895-2 2-2s2 .895 2 2v2m-8 7h8a2 2 0 002-2v-5a2 2 0 00-2-2H8a2 2 0 00-2 2v5a2 2 0 002 2zm2-9V7a4 4 0 118 0v4" />
-                        </svg>
-                        Seguridad
-                    </legend>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                        Déjalo en blanco si no deseas cambiar tu contraseña.
-                    </p>
-
-                    <div class="mt-5 grid gap-x-5 gap-y-4 sm:grid-cols-2">
-                        <div>
-                            <x-label for="password">Nueva contraseña</x-label>
-                            <x-input id="password" name="password" type="password" autocomplete="new-password"
-                                placeholder="Mínimo 8 caracteres" />
-                            @error('password')
-                                <p class="mt-1.5 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div>
-                            <x-label for="password_confirmation">Confirmar contraseña</x-label>
-                            <x-input id="password_confirmation" name="password_confirmation" type="password"
-                                autocomplete="new-password" placeholder="Repite tu contraseña" />
-                            @error('password_confirmation')
-                                <p class="mt-1.5 text-sm font-medium text-red-600 dark:text-red-400">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-                </fieldset>
+            <div>
+                <dd class="text-sm font-semibold text-gray-900 dark:text-white">0</dd>
+                <dt>seguidores</dt>
             </div>
+            <div>
+                <dd class="text-sm font-semibold text-gray-900 dark:text-white">0</dd>
+                <dt>seguidos</dt>
+            </div>
+        </dl>
 
-            <div
-                class="flex flex-col-reverse gap-3 border-t border-gray-200 bg-gray-50 px-5 py-4 dark:border-gray-700 dark:bg-gray-800/70 sm:flex-row sm:items-center sm:justify-end sm:px-8">
-                <a href="{{ route('post', ['user' => $user->username]) }}"
-                    class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                    Cancelar
-                </a>
-                <button type="submit"
-                    class="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800">
+        <div class="border-t border-gray-200 dark:border-gray-700">
+            <div class="flex justify-center">
+                <div
+                    class="flex items-center gap-2 border-t-2 border-gray-900 px-4 py-3 text-xs font-semibold uppercase tracking-widest text-gray-900 dark:border-white dark:text-white">
                     <svg class="h-4 w-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M5 13l4 4L19 7" />
+                            d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 0h6v6h-6v-6z" />
                     </svg>
-                    Guardar cambios
-                </button>
+                    Publicaciones
+                </div>
             </div>
-        </form>
+
+            <div class="grid grid-cols-3 gap-0.5 bg-gray-200 dark:bg-gray-700 sm:gap-1"
+                aria-label="Publicaciones de {{ $user->username }}">
+                @forelse ($posts as $post)
+                    <a href="#"
+                        class="group relative aspect-square overflow-hidden bg-gray-100 focus:outline-none focus:ring-4 focus:ring-inset focus:ring-blue-500 dark:bg-gray-900">
+                        <img src="{{ asset('storage/' . $post->image) }}"
+                            alt="Publicación de {{ $user->username }}"
+                            class="h-full w-full object-cover transition duration-300 group-hover:scale-105" loading="lazy">
+
+                        <div
+                            class="absolute inset-0 hidden items-center justify-center gap-5 bg-black/45 text-sm font-semibold text-white group-hover:flex group-focus:flex sm:text-base">
+                            <span class="flex items-center gap-1.5">
+                                <svg class="h-5 w-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                {{ $post->likes_count ?? 0 }}
+                            </span>
+                            <span class="flex items-center gap-1.5">
+                                <svg class="h-5 w-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M18 10c0 3.866-3.582 7-8 7a8.84 8.84 0 01-3.908-.875L2 17l1.102-3.306A6.4 6.4 0 012 10c0-3.866 3.582-7 8-7s8 3.134 8 7z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                {{ $post->comments_count ?? 0 }}
+                            </span>
+                        </div>
+                    </a>
+                @empty
+                    <div class="col-span-3 flex min-h-72 flex-col items-center justify-center bg-white px-6 py-12 text-center dark:bg-gray-800">
+                        <div
+                            class="flex h-16 w-16 items-center justify-center rounded-full border-2 border-gray-900 text-gray-900 dark:border-white dark:text-white">
+                            <svg class="h-8 w-8" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M3 16l4-4a2 2 0 012.828 0L13 15.172l2-2a2 2 0 012.828 0L21 16.344M8 8h.01M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold text-gray-900 dark:text-white">Aún no hay publicaciones</h3>
+                        <p class="mt-2 max-w-sm text-sm text-gray-500 dark:text-gray-400">
+                            Cuando {{ $user->username }} comparta fotos, aparecerán aquí en una cuadrícula.
+                        </p>
+                    </div>
+                @endforelse
+            </div>
+        </div>
     </section>
 @endsection
